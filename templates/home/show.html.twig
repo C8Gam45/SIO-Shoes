@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <div class="card mb-12" style="margin-top: 3vh;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if product.image %}
+                        <img
+                            src="{{ asset('uploads/images/images/' ~ product.image) }}"
+                            data-fallback-src="{{ asset('uploads/images/' ~ product.image) }}"
+                            class="card-img-top product-image-with-fallback"
+                            alt="{{ product.name }}"
+                        >
+                    {% else %}
+                        <div class="product-card-image-placeholder" role="img" aria-label="Image indisponible">
+                            Image indisponible
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ product.name }}</h1>
+                        <p class="card-text">{{ product.description }}</p>
+                        <h3>{{ product.price }} €</h3>
+                        <form method="post" action="{{ path('app_cart_add', { id: product.id }) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('cart_add_' ~ product.id) }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-outline-success">Ajouter au panier</button>
+                        </form>
+                        <br><br>
+                        <a class="btn btn-dark" href="{{ path('app_home') }}">
+                            Retour
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-5">
+            <h2>Derniers produits ajoutés</h2>
+            <div class="row">
+                {% for latestProduct in lastProducts %}
+                    <div class="col-md-3 mt-3">
+                        <div class="card h-100">
+                            {% if latestProduct.image %}
+                                <a href="{{ path('app_home_product_show', { id: latestProduct.id }) }}">
+                                    <img
+                                        src="{{ asset('uploads/images/images/' ~ latestProduct.image) }}"
+                                        data-fallback-src="{{ asset('uploads/images/' ~ latestProduct.image) }}"
+                                        class="card-img-top product-card-image product-image-with-fallback"
+                                        alt="{{ latestProduct.name }}"
+                                    >
+                                </a>
+                            {% else %}
+                                <div class="product-card-image-placeholder" role="img" aria-label="Image indisponible">
+                                    Image indisponible
+                                </div>
+                            {% endif %}
+
+                            <div class="card-body">
+                                <a
+                                    class="text-decoration-none"
+                                    href="{{ path('app_home_product_show', { id: latestProduct.id }) }}"
+                                >
+                                    <h3 class="h5 card-title">{{ latestProduct.name }}</h3>
+                                </a>
+
+                                <p class="card-text text-truncate">
+                                    {{ latestProduct.description }}
+                                </p>
+
+                                <h4>{{ latestProduct.price }} €</h4>
+
+                                <form method="post" action="{{ path('app_cart_add', { id: latestProduct.id }) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('cart_add_' ~ latestProduct.id) }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-outline-success">Ajouter au panier</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>Aucun produit disponible.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

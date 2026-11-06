@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique du stock - {{ product.name }}{% endblock %}
+
+{% block body %}
+    <main class="container py-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <div>
+                <h1 class="h2 mb-1">Historique des ajouts au stock</h1>
+                <p class="text-muted mb-0">{{ product.name }} — stock actuel : {{ product.stock }}</p>
+            </div>
+            <a class="btn btn-outline-secondary" href="{{ path('app_product_index') }}">Retour aux produits</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Quantité ajoutée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for history in productsAdded %}
+                        <tr>
+                            <td>{{ history.createdAt|date('d/m/Y H:i') }}</td>
+                            <td>{{ history.qte }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2" class="text-center text-muted py-4">Aucun ajout au stock enregistré.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+{% endblock %}

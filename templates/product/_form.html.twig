@@ -1,0 +1,48 @@
+{{ form_start(form, { attr: { class: 'product-form' } }) }}
+
+<div class="product-form__field">
+    {{ form_label(form.name, 'Nom du produit', { label_attr: { class: 'form-label' } }) }}
+    {{ form_widget(form.name, {
+        attr: {
+            class: 'form-control',
+            placeholder: 'Nom du produit'
+        }
+    }) }}
+    {{ form_errors(form.name) }}
+</div>
+
+<div class="product-form__field">
+    {{ form_label(form.description, 'Description', { label_attr: { class: 'form-label' } }) }}
+    {{ form_widget(form.description, { attr: { class: 'form-control', rows: 4 } }) }}
+    {{ form_errors(form.description) }}
+</div>
+
+<div class="product-form__field">
+    {{ form_label(form.price, 'Prix', { label_attr: { class: 'form-label' } }) }}
+    {{ form_widget(form.price, { attr: { class: 'form-control', placeholder: '0,00' } }) }}
+    {{ form_errors(form.price) }}
+</div>
+
+<div class="product-form__field product-form__field--stock">
+    {{ form_label(form.stock, 'Stock initial', { label_attr: { class: 'form-label' } }) }}
+    {{ form_widget(form.stock, { attr: { class: 'form-control', min: 0 } }) }}
+    <div class="form-text">Indiquez le nombre d’articles disponibles.</div>
+    {{ form_errors(form.stock) }}
+</div>
+
+<div class="product-form__field">
+    {{ form_label(form.subCategories, 'Sous-catégories', { label_attr: { class: 'form-label' } }) }}
+    {{ form_widget(form.subCategories, { attr: { class: 'form-select' } }) }}
+    {{ form_errors(form.subCategories) }}
+</div>
+
+<div class="product-form__field">
+    {{ form_label(form.image, 'Image du produit', { label_attr: { class: 'form-label' } }) }}
+    {{ form_widget(form.image, { attr: { class: 'form-control' } }) }}
+    {{ form_errors(form.image) }}
+</div>
+
+<div class="product-form__actions">
+    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+</div>
+{{ form_end(form) }}

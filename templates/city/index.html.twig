@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Villes et frais de port{% endblock %}
+
+{% block body %}
+    <main class="container py-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <h1>Villes et frais de port</h1>
+            <a href="{{ path('app_city_new') }}" class="btn btn-primary">Ajouter une ville</a>
+        </div>
+
+        {% include 'layouts/_flash_message.html.twig' %}
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Ville</th>
+                        <th scope="col">Code postal</th>
+                        <th scope="col">Frais de port</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for city in cities %}
+                        <tr>
+                            <td>{{ city.name }}</td>
+                            <td>{{ city.zipCode }}</td>
+                            <td>{{ city.shippingCost|number_format(2, ',', ' ') }} €</td>
+                            <td class="d-flex gap-2">
+                                <a href="{{ path('app_city_edit', {id: city.id}) }}"
+                                   class="btn btn-sm btn-outline-primary">Modifier</a>
+                                <form method="post" action="{{ path('app_city_delete', {id: city.id}) }}">
+                                    <input type="hidden" name="_token"
+                                           value="{{ csrf_token('delete-city-' ~ city.id) }}">
+                                    <button class="btn btn-sm btn-outline-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">Aucune ville enregistrée.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+{% endblock %}

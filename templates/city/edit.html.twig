@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une ville{% endblock %}
+
+{% block body %}
+    <main class="container py-4">
+        <h1 class="mb-3">Modifier {{ city.name }}</h1>
+        {% include 'city/_form.html.twig' %}
+    </main>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Finaliser la commande{% endblock %}
+
+{% block body %}
+    <main class="container py-4">
+        <h1 class="mb-4">Finaliser la commande</h1>
+
+        <div class="row g-4">
+            <section class="col-12 col-lg-7">
+                <h2 class="h4">Adresse de livraison</h2>
+                {% include 'order/_form.html.twig' with {
+                    submit_label: 'Confirmer la commande',
+                    cancel_path: 'app_cart'
+                } %}
+            </section>
+
+            <aside class="col-12 col-lg-5">
+                <h2 class="h4">Récapitulatif</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr><th>Produit</th><th>Qté</th><th>Total</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.subtotal|number_format(2, ',', ' ') }} €</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <dl class="row" id="order-total-summary"
+                    data-subtotal-cents="{{ (subtotal * 100)|round }}">
+                    <dt class="col-7">Sous-total</dt>
+                    <dd class="col-5 text-end">{{ subtotal|number_format(2, ',', ' ') }} €</dd>
+                    <dt class="col-7">Frais de port</dt>
+                    <dd class="col-5 text-end" id="shipping-cost">{{ shippingCost|number_format(2, ',', ' ') }} €</dd>
+                    <dt class="col-7">Total</dt>
+                    <dd class="col-5 text-end fw-bold" id="order-total">{{ total|number_format(2, ',', ' ') }} €</dd>
+                </dl>
+                <p class="form-text">Les frais de port sont définis par la ville sélectionnée.</p>
+            </aside>
+        </div>
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const citySelect = document.getElementById('delivery-city');
+            const totalSummary = document.getElementById('order-total-summary');
+            if (!citySelect || !totalSummary) {
+                return;
+            }
+
+            const shippingOutput = document.getElementById('shipping-cost');
+            const totalOutput = document.getElementById('order-total');
+            const shippingInput = document.getElementById('shipping-price');
+            const subtotalCents = Number(totalSummary.dataset.subtotalCents);
+            const currency = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const updateTotals = () => {
+                const selectedOption = citySelect.selectedOptions[0];
+                const shippingCents = Math.round(Number(selectedOption?.dataset.shippingCost || 0) * 100);
+                shippingOutput.textContent = `${currency.format(shippingCents / 100)} €`;
+                totalOutput.textContent = `${currency.format((subtotalCents + shippingCents) / 100)} €`;
+                shippingInput.value = (shippingCents / 100).toFixed(2);
+            };
+
+            citySelect.addEventListener('change', updateTotals);
+            updateTotals();
+        });
+    </script>
+{% endblock %}

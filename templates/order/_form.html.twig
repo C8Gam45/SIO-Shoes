@@ -1,0 +1,32 @@
+{{ form_start(form, {attr: {class: 'row g-3'}}) }}
+    <div class="col-12 col-md-6">
+        {{ form_label(form.firstName, null, {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.firstName) }}
+        {{ form_errors(form.firstName) }}
+    </div>
+    <div class="col-12 col-md-6">
+        {{ form_label(form.lastName, null, {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.lastName) }}
+        {{ form_errors(form.lastName) }}
+    </div>
+    <div class="col-12 col-md-6">
+        {{ form_label(form.phoneNumber, null, {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.phoneNumber) }}
+        {{ form_errors(form.phoneNumber) }}
+    </div>
+    <div class="col-12 col-md-6">
+        {{ form_label(form.adress, null, {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.adress) }}
+        {{ form_errors(form.adress) }}
+    </div>
+    <div class="col-12">
+        {{ form_label(form.city, null, {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.city) }}
+        {{ form_errors(form.city) }}
+    </div>
+    {{ form_widget(form.shippingPrice) }}
+    <div class="col-12 d-flex gap-2">
+        <button class="btn btn-primary" type="submit">{{ submit_label|default('Enregistrer') }}</button>
+        <a href="{{ path(cancel_path|default('app_order_index')) }}" class="btn btn-outline-secondary">Annuler</a>
+    </div>
+{{ form_end(form) }}

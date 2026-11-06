@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un produit{% endblock %}
+
+{% block body %}
+    <main class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="h3 card-title mb-4">Modifier un produit</h1>
+
+                {{ include('product/_form.html.twig', {
+                    button_label: 'Enregistrer les modifications'
+                }) }}
+
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <a class="btn btn-outline-secondary" href="{{ path('app_product_index') }}">
+                        Retour aux produits
+                    </a>
+                    {{ include('product/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

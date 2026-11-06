@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+
+<label for="{{ form.name.vars.id }}">Nom de la sous-catégorie :</label>
+{{ form_widget(form.name, {
+    attr: {
+        class: 'form-control',
+        placeholder: 'Nom'
+    }
+}) }}
+<br>
+
+<label for="{{ form.category.vars.id }}">Catégorie :</label>
+{{ form_widget(form.category, {
+    attr: {
+        class: 'form-control'
+    }
+}) }}
+<br>
+
+<button class="btn btn-primary">
+    {{ button_label|default('Enregistrer') }}
+</button>
+
+{{ form_end(form) }}

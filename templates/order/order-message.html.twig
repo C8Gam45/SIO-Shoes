@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        {% include 'layouts/_flash_message.html.twig' %}
+        <h2>Commande enregistrée</h2>
+        <p>Votre commande a bien été enregistrée.</p>
+        <a href="{{ path('app_home') }}" class="btn btn-primary">Continuer mes achats</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commandes{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <h1>Commandes</h1>
+        {% include 'layouts/_flash_message.html.twig' %}
+
+        {% for order in orders %}
+            <h3>Commande n°{{ order.id }} du {{ order.createdAt|date('d/m/Y H:i:s') }}</h3>
+            {% if order.isDeLivered == true %}
+                <h3 class="text-success">Commande livrée</h3>
+            {% else %}
+                <h3 class="text-danger">Commande en attente de livraison</h3>
+            {% endif %}
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <h2 class="h4 mb-0">
+                    Commande n°{{ order.id }}
+                    du {{ order.createdAt|date('d/m/Y H:i:s') }}
+                </h2>
+                <form
+                    method="post"
+                    action="{{ path('app_orders_delete', {id: order.id}) }}"
+                    onsubmit="return confirm('Voulez-vous vraiment supprimer cette commande ?');"
+                >
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete-editor-order-' ~ order.id) }}">
+                    <button class="btn btn-danger btn-sm" type="submit">Supprimer la commande</button>
+                </form>
+            </div>
+
+            <h3 class="h5">Informations client</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Adresse</th>
+                            <th>Ville</th>
+                            <th>Téléphone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.lastName }}</td>
+                            <td>{{ order.firstName }}</td>
+                            <td>{{ order.adress }}</td>
+                            <td>{{ order.city.zipCode }} {{ order.city.name }}</td>
+                            <td>{{ order.phoneNumber }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="h5">Produits commandés</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Nom du produit</th>
+                            <th>Prix unitaire</th>
+                            <th>Quantité</th>
+                            <th>Prix total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for line in order.orderProducts %}
+                            <tr>
+                                <td>
+                                    {% if line.product.image %}
+                                        <img
+                                            src="{{ asset('uploads/images/' ~ line.product.image) }}"
+                                            alt="{{ line.product.name }}"
+                                            style="width: 80px; height: auto;"
+                                        >
+                                    {% else %}
+                                        Aucune image
+                                    {% endif %}
+                                </td>
+                                <td>{{ line.product.name }}</td>
+                                <td>{{ line.price|number_format(2, ',', ' ') }} €</td>
+                                <td>{{ line.qte }}</td>
+                                <td>{{ (line.price * line.qte)|number_format(2, ',', ' ') }} €</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">Aucun produit enregistré pour cette commande.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="h6">
+                Frais de port : {{ order.shippingPrice|number_format(2, ',', ' ') }} €
+            </h4>
+            <h4 class="h6">
+                Total à payer : {{ order.totalPrice|number_format(2, ',', ' ') }} €
+            </h4>
+            <hr>
+        {% else %}
+            <h2>Aucune commande à afficher</h2>
+        {% endfor %}
+
+        <a class="btn btn-dark" href="{{ path('app_home') }}">Retour</a>
+    </div>
+{% endblock %}

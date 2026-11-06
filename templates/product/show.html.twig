@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du produit{% endblock %}
+
+{% block body %}
+    <main class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="h3 card-title mb-4">{{ product.name }}</h1>
+
+                {% if product.image %}
+                    <img
+                        src="{{ asset('uploads/images/' ~ product.image) }}"
+                        alt="{{ product.name }}"
+                        class="img-fluid rounded mb-4"
+                        style="max-height: 320px"
+                    >
+                {% endif %}
+
+                <dl class="row">
+                    <dt class="col-sm-3">Id</dt>
+                    <dd class="col-sm-9">{{ product.id }}</dd>
+
+                    <dt class="col-sm-3">Description</dt>
+                    <dd class="col-sm-9">{{ product.description }}</dd>
+
+                    <dt class="col-sm-3">Prix</dt>
+                    <dd class="col-sm-9">{{ product.price }}</dd>
+                </dl>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-outline-secondary"
+                       href="{{ path('app_product_index') }}">
+                        Retour aux produits
+                    </a>
+
+                    <a class="btn btn-primary"
+                       href="{{ path('app_product_edit', { id: product.id }) }}">
+                        Modifier
+                    </a>
+
+                    <a class="btn btn-success"
+                       href="{{ path('app_product_stock_add', { id: product.id }) }}">
+                        Ajouter au stock
+                    </a>
+
+                    <a class="btn btn-outline-primary"
+                       href="{{ path('app_product_stock_add_history', { id: product.id }) }}">
+                        Historique du stock
+                    </a>
+
+                    {{ include('product/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

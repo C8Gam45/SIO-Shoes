@@ -1,0 +1,21 @@
+{{ form_start(form, {attr: {class: 'row g-3'}}) }}
+    <div class="col-12">
+        {{ form_label(form.name, null, {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+    </div>
+    <div class="col-12 col-md-6">
+        {{ form_label(form.zipCode, null, {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.zipCode) }}
+        {{ form_errors(form.zipCode) }}
+    </div>
+    <div class="col-12 col-md-6">
+        {{ form_label(form.shippingCost, null, {label_attr: {class: 'form-label'}}) }}
+        {{ form_widget(form.shippingCost) }}
+        {{ form_errors(form.shippingCost) }}
+    </div>
+    <div class="col-12 d-flex gap-2">
+        <button class="btn btn-primary" type="submit">{{ button_label|default('Enregistrer') }}</button>
+        <a href="{{ path('app_city_index') }}" class="btn btn-outline-secondary">Annuler</a>
+    </div>
+{{ form_end(form) }}

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une commande{% endblock %}
+
+{% block body %}
+    <main class="container py-4">
+        <h1 class="mb-3">Modifier la commande n°{{ order.id }}</h1>
+        {% include 'order/_form.html.twig' %}
+    </main>
+{% endblock %}

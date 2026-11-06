@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ subCategory.name }}{% endblock %}
+
+{% block body %}
+    <main class="container category-filter-page">
+        <header class="category-filter-page__header">
+            <p class="category-filter-page__eyebrow">Boutique</p>
+            <h1>{{ subCategory.name }}</h1>
+            <p class="category-filter-page__count">
+                {{ products.getTotalItemCount }} produit{{ products.getTotalItemCount > 1 ? 's' : '' }}
+            </p>
+        </header>
+
+        <div class="row g-4">
+            {% for product in products %}
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                    <article class="card category-product-card h-100">
+                        <a
+                            class="category-product-card__image-link"
+                            href="{{ path('app_home_product_show', { id: product.id }) }}"
+                        >
+                            {% if product.image %}
+                                <img
+                                    src="{{ asset('uploads/images/images/' ~ product.image) }}"
+                                    data-fallback-src="{{ asset('uploads/images/' ~ product.image) }}"
+                                    class="category-product-card__image product-image-with-fallback"
+                                    alt="{{ product.name }}"
+                                >
+                            {% else %}
+                                <span class="category-product-card__placeholder">
+                                    Image indisponible
+                                </span>
+                            {% endif %}
+                        </a>
+
+                        <div class="card-body category-product-card__body">
+                            <a
+                                class="category-product-card__title"
+                                href="{{ path('app_home_product_show', { id: product.id }) }}"
+                            >
+                                {{ product.name }}
+                            </a>
+
+                            {% if product.description %}
+                                <p class="category-product-card__description">
+                                    {{ product.description }}
+                                </p>
+                            {% endif %}
+
+                            <p class="category-product-card__price">{{ product.price }} €</p>
+
+                            <form method="post" action="{{ path('app_cart_add', { id: product.id }) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('cart_add_' ~ product.id) }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-outline-success">Ajouter au panier</button>
+                            </form>
+                        </div>
+                    </article>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p class="category-filter-page__empty">
+                        Aucun produit disponible dans cette sous-catégorie.
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(products, 'layouts/pagination_template.html.twig') }}
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20261106081728 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_64C19C15E237E06 ON category (name)');
+        $this->addSql('ALTER TABLE `order` ADD shipping_price NUMERIC(10, 2) NOT NULL, ADD total_price NUMERIC(10, 2) NOT NULL');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('DROP INDEX UNIQ_64C19C15E237E06 ON category');
+        $this->addSql('ALTER TABLE `order` DROP shipping_price, DROP total_price');
+    }
+}
